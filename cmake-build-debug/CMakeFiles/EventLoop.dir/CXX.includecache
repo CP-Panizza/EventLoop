@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/cmj/桌面/EventLoop/Event.hpp
+EventLoop.h
+/home/cmj/桌面/EventLoop/EventLoop.h
+
+/home/cmj/桌面/EventLoop/EventLoop.h
+functional
+-
+sys/epoll.h
+-
+string.h
+-
+sys/socket.h
+-
+netinet/in.h
+-
+iostream
+-
+fcntl.h
+-
+unistd.h
+-
+Event.hpp
+/home/cmj/桌面/EventLoop/Event.hpp
+
+/home/cmj/桌面/EventLoop/main.cpp
+iostream
+-
+EventLoop.h
+/home/cmj/桌面/EventLoop/EventLoop.h
+
