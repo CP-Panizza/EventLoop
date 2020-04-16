@@ -48,7 +48,7 @@ int setnonblocking(int fd)
 class EventLoop {
 public:
     Event *events;
-
+    Event::CallBack tcp_call_back;
 #ifndef _WIN64
     int socket_fd;
     int epoll_fd;
@@ -164,6 +164,7 @@ public:
 
 public:
     SOCKET socket_fd;
+    int max_fd;
     FDS fds;
     EventLoop(uint16_t port){
         this->events = new Event[MAX_COUNT + 1];
@@ -201,11 +202,12 @@ public:
             WSACleanup();
             exit(-1);
         }
-
+        max_fd = socket_fd;
         if(setnonblocking(socket_fd) == -1){
             printf("[ERROR]>> set socket_fd nnonblock err");
             exit(-1);
         }
+
         FD_ZERO(&fds.read_fd);
         FD_ZERO(&fds.write_fd);
         FD_ZERO(&fds._read_fd);
@@ -214,6 +216,15 @@ public:
         Event *accepter = &this->events[MAX_COUNT];
         accepter->SetSrcFd(&fds);
         accepter->Set(socket_fd, SelectEvent::Read, std::bind(&EventLoop::Accept, this, std::placeholders::_1));
+    }
+
+    int max(int a, int b){
+        if(a == b) return a;
+        return a > b? a : b;
+    }
+
+    void BindTcpHandle(const Event::CallBack &callBack){
+        tcp_call_back = callBack;
     }
 
     void Accept(Event *ev) {
@@ -240,56 +251,14 @@ public:
             closesocket(connfd);
             return;
         }
-        printf("[INFO]>> clinet %d set nonblock success\n", connfd);
+        max_fd = max(socket_fd, connfd);
         auto e = &this->events[i];
         e->SetSrcFd(&this->fds);
-        e->Set(connfd, SelectEvent::Read, std::bind(&EventLoop::RecvData, this, std::placeholders::_1));
-        printf("accept read count:%d\n", fds.read_fd.fd_count);
-        for (int j = 0; j < fds.read_fd.fd_count; ++j) {
-            if(connfd == fds.read_fd.fd_array[j]){
-                printf("set success!\n");
-                return;
-            }
-        }
-        printf("set connfd err\n");
-    }
-
-    void RecvData(Event *ev){
-        int n = recv(ev->fd, ev->buff, sizeof(ev->buff), 0);
-        ev->Del();
-        if(n > 0){
-            ev->len = n;
-            ev->buff[n] = '\0';
-//            printf("recv: %s\n", ev->buff);
-            ev->Set(ev->fd, SelectEvent::Write, std::bind(&EventLoop::SendData, this, std::placeholders::_1) );
-        }else if((n < 0) && (errno == EAGAIN||errno == EWOULDBLOCK||errno == EINTR)){
-            printf("Re recv\n");
-            ev->Set(ev->fd, SelectEvent::Read, std::bind(&EventLoop::RecvData, this, std::placeholders::_1) );
-        } else if(n == 0){
-            std::cout << "[Notify]>> clinet:" << ev->fd << "closed" << std::endl;
-            closesocket(ev->fd);
-            ev->ClearBuffer();
-            ev->Del();
-        }
+        e->Set(connfd, SelectEvent::Read, this->tcp_call_back);
     }
 
 
-    void SendData(Event *ev){
-        int n = send(ev->fd, ev->buff, ev->len, 0);
-        printf("nbytes = %d\n", n);
-        ev->Del();
-        if(n > 0)
-        {
-            printf("send success!");
-            ev->Set(ev->fd, SelectEvent::Read,  std::bind(&EventLoop::RecvData, this, std::placeholders::_1) );
-        } else {
-            std::cout << "[Notify]>> clinet:" << ev->fd << "closed" << std::endl;
-            closesocket(ev->fd);
-            ev->ClearBuffer();
-            ev->Del();
-            printf("write error\n");
-        }
-    }
+
 
     int GetEventByFd(SOCKET s){
         int i;
@@ -314,18 +283,16 @@ public:
             FD_ZERO(&this->fds._read_fd);
             this->fds._read_fd = this->fds.read_fd;
             this->fds._write_fd = this->fds.write_fd;
-            printf("before select read_count:%d\n", this->fds.read_fd.fd_count);
-//            printf("before write_count:%d\n", this->fds.write_fd.fd_count);
-            ret = select(socket_fd + 1, &this->fds._read_fd, &this->fds._write_fd, NULL, &t);//最后一个参数为NULL，一直等待，直到有数据过来,客户端断开也会触发读/写状态，然后判断recv返回值是否为0，为0这说明客户端断开连接
-            printf("after select read_count:%d\n", this->fds.read_fd.fd_count);
-//            printf("after write_count:%d\n", this->fds.write_fd.fd_count);
+            printf("select before read_count:%d\n", this->fds.read_fd.fd_count);
+            ret = select(max_fd + 1, &this->fds._read_fd, &this->fds._write_fd, NULL, &t);//最后一个参数为NULL，一直等待，直到有数据过来,客户端断开也会触发读/写状态，然后判断recv返回值是否为0，为0这说明客户端断开连接
+            printf("select after read_count:%d\n", this->fds.read_fd.fd_count);
             if (ret == SOCKET_ERROR) {
                 printf("[ERROR]>> select err!");
                 WSACleanup();
                 exit(-1);
             }
 
-            for (int i = 0; i < this->fds._read_fd.fd_count; ++i) {
+            for (int i = 0; i < ret; ++i) {
                 SOCKET s = this->fds._read_fd.fd_array[i];
                 if (FD_ISSET(s, &this->fds._read_fd)) {
                     int index = GetEventByFd(s);
@@ -338,7 +305,7 @@ public:
                 }
             }
 
-            for (int i = 0; i < this->fds._write_fd.fd_count; ++i) {
+            for (int i = 0; i < ret; ++i) {
                 SOCKET s = this->fds._write_fd.fd_array[i];
                 if (FD_ISSET(s, &this->fds._write_fd)) {
                     int index = GetEventByFd(s);
