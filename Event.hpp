@@ -98,12 +98,9 @@ public:
             FD_CLR(this->fd, &this->src_fd->read_fd);
             FD_CLR(this->fd, &this->src_fd->_read_fd);
         }
+
         if (this->statu != EventStatu::Using) {
             this->statu = EventStatu ::Using;
-        }
-
-        if(_event == SelectEvent::Read){
-            printf("set done read_count:%d\n", this->src_fd->read_fd.fd_count);
         }
     }
 
