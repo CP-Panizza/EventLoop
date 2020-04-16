@@ -6,20 +6,18 @@
 
 #IncludeRegexTransform: 
 
-/home/cmj/桌面/EventLoop/Event.hpp
+C:/Users/Administrator/Desktop/EventLoop/Event.hpp
+utility
+-
 EventLoop.h
-/home/cmj/桌面/EventLoop/EventLoop.h
+C:/Users/Administrator/Desktop/EventLoop/EventLoop.h
 
-/home/cmj/桌面/EventLoop/EventLoop.h
+C:/Users/Administrator/Desktop/EventLoop/EventLoop.h
 functional
 -
-sys/epoll.h
--
+socket_header.h
+C:/Users/Administrator/Desktop/EventLoop/socket_header.h
 string.h
--
-sys/socket.h
--
-netinet/in.h
 -
 iostream
 -
@@ -28,11 +26,25 @@ fcntl.h
 unistd.h
 -
 Event.hpp
-/home/cmj/桌面/EventLoop/Event.hpp
+C:/Users/Administrator/Desktop/EventLoop/Event.hpp
 
-/home/cmj/桌面/EventLoop/main.cpp
+C:/Users/Administrator/Desktop/EventLoop/main.cpp
 iostream
 -
 EventLoop.h
-/home/cmj/桌面/EventLoop/EventLoop.h
+C:/Users/Administrator/Desktop/EventLoop/EventLoop.h
+
+C:/Users/Administrator/Desktop/EventLoop/socket_header.h
+winsock2.h
+-
+ws2tcpip.h
+-
+sys/epoll.h
+-
+netinet/in.h
+-
+sys/socket.h
+-
+arpa/inet.h
+-
 

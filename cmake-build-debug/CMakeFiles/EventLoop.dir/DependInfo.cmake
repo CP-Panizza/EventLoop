@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/cmj/桌面/EventLoop/main.cpp" "/home/cmj/桌面/EventLoop/cmake-build-debug/CMakeFiles/EventLoop.dir/main.cpp.o"
+  "C:/Users/Administrator/Desktop/EventLoop/main.cpp" "C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/CMakeFiles/EventLoop.dir/main.cpp.obj"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
