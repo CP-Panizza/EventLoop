@@ -131,9 +131,80 @@ void SendData(Event *ev)
 #endif
 
 
+void SendHttp(Event *ev)
+{
+    int ret = -1;
+    int Total = 0;
+    int lenSend = 0;
+    struct timeval tv{};
+    tv.tv_sec = 3;
+    tv.tv_usec = 500;
+    fd_set wset;
+    while(true)
+    {
+        FD_ZERO(&wset);
+        FD_SET(ev->fd, &wset);
+        if(select(ev->fd + 1, nullptr, &wset, nullptr, &tv) > 0)//3.5秒之内可以send，即socket可以写入
+        {
+            lenSend = send(ev->fd,ev->buff + Total, ev->len - Total,0);
+            if(lenSend == -1)
+            {
+                ev->ClearBuffer();
+                close(ev->fd);
+                ev->Del();
+                break;
+            }
+            Total += lenSend;
+            if(Total == ev->len)
+            {
+                ev->ClearBuffer();
+                close(ev->fd);
+                ev->Del();
+            }
+        }
+
+        else  //3.5秒之内socket还是不可以写入，认为发送失败
+        {
+            ev->ClearBuffer();
+            close(ev->fd);
+            ev->Del();
+            break;
+        }
+    }
+
+}
+
+void HandleHttp(Event *ev){
+    char buff[1024];
+    int n = recv(ev->fd, buff, sizeof(buff), 0);
+    if(n > 0){
+        buff[n] = '\0';
+        printf("recv: %s\n", buff);
+        std::string data = R"(HTTP/1.1 200 OK
+Date: Sat, 31 Dec 2005 23:59:59 GMT
+Content-Type: application/json;charset=utf8
+
+{"name":"cmj", "age": 120})";
+        strcpy(ev->buff, data.c_str());
+        ev->len = data.size();
+        ev->Set(ev->fd, EPOLLOUT,  SendHttp);
+    }else if((n < 0) && (errno == EAGAIN||errno == EWOULDBLOCK||errno == EINTR)){
+        ev->Set(ev->fd, EPOLLOUT, HandleHttp);
+    } else if(n == 0 || n == -1){
+        std::cout << "[Notify]>> clinet:" << ev->fd << "closed" << std::endl;
+        close(ev->fd);
+        ev->ClearBuffer();
+        ev->Del();
+    }
+}
+
+
 int main() {
 
+
     EventLoop *el = new EventLoop;
+    int socket_fd = el->CreateSocket(8888);
+    int http_fd = el->CreateSocket(8881);
     el->InitEvents();
     el->InitEventManger();
     el->customEventManger->On("close", [&](EventManger *, std::vector<pvoid> args){
@@ -142,8 +213,10 @@ int main() {
     });
 
     el->CreateEpoll();
-    el->LoadEventMap(el->CreateSocket(8888), RecvData);
+    el->LoadEventMap(socket_fd, RecvData);
+    el->LoadEventMap(http_fd, HandleHttp);
     el->Run();
+
 
     return 0;
 }

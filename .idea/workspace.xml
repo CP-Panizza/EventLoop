@@ -12,9 +12,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5977ee8f-0059-4a8e-889a-981c8f966856" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/Event.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/Event.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EventLoop.h" beforeDir="false" afterPath="$PROJECT_DIR$/EventLoop.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/EventLoop" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/EventLoop" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -71,7 +69,7 @@
       <file leaf-file-name="Event.hpp" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Event.hpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="367">
+            <state relative-caret-position="547">
               <caret line="33" column="13" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
               <folding>
                 <element signature="e#91#109#0" expanded="true" />
@@ -80,11 +78,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.cpp" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.cpp" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1537">
-              <caret line="138" column="26" selection-start-line="138" selection-start-column="26" selection-end-line="138" selection-end-column="26" />
+            <state relative-caret-position="130">
+              <caret line="187" column="25" selection-start-line="187" selection-start-column="25" selection-end-line="187" selection-end-column="25" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
                 <element signature="e#128#1703#0" expanded="true" />
@@ -93,11 +91,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EventLoop.h" pinned="false" current-in-tab="true">
+      <file leaf-file-name="EventLoop.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/EventLoop.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="317">
-              <caret line="200" lean-forward="true" selection-start-line="200" selection-end-line="200" />
+            <state relative-caret-position="345">
+              <caret line="86" column="80" lean-forward="true" selection-start-line="85" selection-start-column="8" selection-end-line="86" selection-end-column="80" />
               <folding>
                 <element signature="e#166#192#0" expanded="true" />
                 <element signature="e#510#697#0" expanded="true" />
@@ -123,8 +121,8 @@
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/CusEvent.hpp" />
         <option value="$PROJECT_DIR$/Event.hpp" />
-        <option value="$PROJECT_DIR$/main.cpp" />
         <option value="$PROJECT_DIR$/EventLoop.h" />
+        <option value="$PROJECT_DIR$/main.cpp" />
       </list>
     </option>
   </component>
@@ -211,12 +209,12 @@
       <workItem from="1586999017210" duration="24189000" />
       <workItem from="1587091911517" duration="225000" />
       <workItem from="1587099574119" duration="10313000" />
-      <workItem from="1587112116125" duration="8465000" />
+      <workItem from="1587112116125" duration="10992000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="43192000" />
+    <option name="totallyTimeSpent" value="45719000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1301" height="772" extended-state="6" />
@@ -228,11 +226,11 @@
       <window_info anchor="bottom" id="CMake" order="7" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.25449103" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.33982036" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32784432" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.4251497" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.36976048" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -252,7 +250,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="22" />
+      <option name="time" value="25" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="CMakeRunConfiguration">
@@ -475,13 +473,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///usr/include/c++/4.9/functional">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="2040" selection-start-line="2040" selection-end-line="2040" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/CMakeLists.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="260">
@@ -515,7 +506,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Event.hpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="367">
+        <state relative-caret-position="547">
           <caret line="33" column="13" selection-start-line="33" selection-start-column="13" selection-end-line="33" selection-end-column="13" />
           <folding>
             <element signature="e#91#109#0" expanded="true" />
@@ -523,24 +514,31 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.cpp">
+    <entry file="file:///usr/include/c++/4.9/functional">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1537">
-          <caret line="138" column="26" selection-start-line="138" selection-start-column="26" selection-end-line="138" selection-end-column="26" />
-          <folding>
-            <element signature="e#0#19#0" expanded="true" />
-            <element signature="e#128#1703#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="121">
+          <caret line="2040" selection-start-line="2040" selection-end-line="2040" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/EventLoop.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="317">
-          <caret line="200" lean-forward="true" selection-start-line="200" selection-end-line="200" />
+        <state relative-caret-position="345">
+          <caret line="86" column="80" lean-forward="true" selection-start-line="85" selection-start-column="8" selection-end-line="86" selection-end-column="80" />
           <folding>
             <element signature="e#166#192#0" expanded="true" />
             <element signature="e#510#697#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="130">
+          <caret line="187" column="25" selection-start-line="187" selection-start-column="25" selection-end-line="187" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+            <element signature="e#128#1703#0" expanded="true" />
           </folding>
         </state>
       </provider>
