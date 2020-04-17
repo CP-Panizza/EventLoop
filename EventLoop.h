@@ -59,9 +59,11 @@ int setnonblocking(int fd) {
 
 class EventLoop {
 public:
-    EventManger *eventManger;
+    EventManger *customEventManger;
     Event *events;
     int cut_index;  //事件列表分割线
+
+    bool running;
 
 #ifndef _WIN64
 
@@ -72,7 +74,7 @@ public:
     };
 
     void InitEventManger(){
-        this->eventManger = new EventManger;
+        this->customEventManger = new EventManger;
     }
 
     static int CreateSocket(uint16_t port) {
@@ -118,7 +120,8 @@ public:
         }
     }
 
-    void CreateEventMap(int fd, Event::CallBack call_back) {
+    //为fd挂载tcp处理函数
+    void LoadEventMap(int fd, Event::CallBack call_back) {
 
         Event *accepter = &this->events[cut_index--];
 
@@ -126,9 +129,24 @@ public:
 
         accepter->SetSrcFd(epoll_fd);
 
-        accepter->eventManger = this->eventManger;
+        accepter->customEventManger = this->customEventManger;
 
+        accepter->el = this;
         accepter->Set(fd, EPOLLIN, std::bind(&EventLoop::Accept, this, std::placeholders::_1));
+    }
+
+
+    //卸载fd上的tcp处理函数
+    void UnLoadEventMap(int fd, std::function<void(Event *ev)> unload_call_back){
+        for (int i = 0; i <= MAX_COUNT; ++i) {
+            auto ev = &this->events[i];
+            if(ev->fd == fd){
+                ev->ClearBuffer();
+                ev->Del();
+                ev->callBack = nullptr;
+                unload_call_back(ev);
+            }
+        }
     }
 
     void Accept(Event *ev) {
@@ -155,7 +173,8 @@ public:
         setnonblocking(connfd);
         auto e = &this->events[i];
         e->SetSrcFd(epoll_fd);
-        e->eventManger = this->eventManger;
+        e->customEventManger = this->customEventManger;
+        e->el = this;
         e->Set(connfd, EPOLLIN, data_ptr->callBack);
     }
 
@@ -163,14 +182,22 @@ public:
     void Run() {
         struct epoll_event epoll_events[MAX_COUNT + 1];
         int i;
-        while (1) {
+        running = true;
+        while (running) {
             int nfd = epoll_wait(this->epoll_fd, epoll_events, MAX_COUNT + 1, 1000);
             for (i = 0; i < nfd; ++i) {
                 ((Event *) epoll_events[i].data.ptr)->Call();
             }
 
-            this->eventManger->ProcEvents();
+            this->customEventManger->ProcEvents();
         }
+    }
+
+
+    void ShutDown(){
+        running = false;
+        std::cout << "[INFO]>> Server is shutdown" << std::endl;
+        exit(-1);
     }
 
 

@@ -29,6 +29,8 @@ enum SelectEvent{
     Write
 };
 
+class EventLoop;
+
 class Event {
 public:
     typedef std::function<void(Event *)> CallBack;
@@ -36,7 +38,8 @@ public:
     int src_fd; //事件源fd exp: select_fd, epoll_fd
     int fd;
     int events;
-    EventManger *eventManger;
+    EventManger *customEventManger;
+    EventLoop *el;
     void SetSrcFd(int _src_fd){
         this->src_fd = _src_fd;
     }

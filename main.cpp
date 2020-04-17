@@ -68,7 +68,6 @@ void SendData(Event *ev)
 #else
 
 void RecvData(Event *ev){
-    ev->eventManger->Emit("console",{&ev->fd});
     int n = recv(ev->fd, ev->buff, sizeof(ev->buff), 0);
     if(n > 0){
         ev->len = n;
@@ -137,11 +136,13 @@ int main() {
     EventLoop *el = new EventLoop;
     el->InitEvents();
     el->InitEventManger();
-    el->eventManger->On("console", [&](EventManger *, std::vector<pvoid> args){
-        std::cout << "handle client: " << *(int *)args[0]<< std::endl;
+    el->customEventManger->On("close", [&](EventManger *, std::vector<pvoid> args){
+        auto el = (EventLoop *)args[0];
+        el->ShutDown();
     });
+
     el->CreateEpoll();
-    el->CreateEventMap(el->CreateSocket(8888), RecvData);
+    el->LoadEventMap(el->CreateSocket(8888), RecvData);
     el->Run();
 
     return 0;
