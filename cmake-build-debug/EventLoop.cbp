@@ -84,6 +84,9 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/cmj/桌面/EventLoop/CusEvent.hpp">
+			<Option target="EventLoop"/>
+		</Unit>
 		<Unit filename="/home/cmj/桌面/EventLoop/Event.hpp">
 			<Option target="EventLoop"/>
 		</Unit>

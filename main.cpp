@@ -1,5 +1,6 @@
 #include <iostream>
 #include "EventLoop.h"
+#include <vector>
 
 void SendData(Event *ev);
 void RecvData(Event *ev);
@@ -67,6 +68,7 @@ void SendData(Event *ev)
 #else
 
 void RecvData(Event *ev){
+    ev->eventManger->Emit("console",{&ev->fd});
     int n = recv(ev->fd, ev->buff, sizeof(ev->buff), 0);
     if(n > 0){
         ev->len = n;
@@ -115,6 +117,7 @@ void SendData(Event *ev)
                 break;
             }
         }
+
         else  //3.5秒之内socket还是不可以写入，认为发送失败
         {
             ev->ClearBuffer();
@@ -129,18 +132,17 @@ void SendData(Event *ev)
 #endif
 
 
-
-std::vector<Event::CallBack> g_call_backs = {
-        RecvData
-};
-
-
 int main() {
+
     EventLoop *el = new EventLoop;
     el->InitEvents();
+    el->InitEventManger();
+    el->eventManger->On("console", [&](EventManger *, std::vector<pvoid> args){
+        std::cout << "handle client: " << *(int *)args[0]<< std::endl;
+    });
     el->CreateEpoll();
-    el->SetCallBackS(g_call_backs);
-    el->CreateEventMap(el->CreateSocket(8888), MAX_COUNT, 0);
+    el->CreateEventMap(el->CreateSocket(8888), RecvData);
     el->Run();
+
     return 0;
 }

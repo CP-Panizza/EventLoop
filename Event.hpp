@@ -8,6 +8,7 @@
 
 #include <utility>
 #include "EventLoop.h"
+#include "CusEvent.hpp"
 
 #define pvoid void *
 
@@ -35,6 +36,7 @@ public:
     int src_fd; //事件源fd exp: select_fd, epoll_fd
     int fd;
     int events;
+    EventManger *eventManger;
     void SetSrcFd(int _src_fd){
         this->src_fd = _src_fd;
     }
