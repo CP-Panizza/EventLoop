@@ -19,6 +19,7 @@
 #include <iostream>
 #include <fcntl.h>
 #include <unistd.h>
+#include <vector>
 #include "Event.hpp"
 
 #define pvoid void *
@@ -48,94 +49,85 @@ int setnonblocking(int fd)
 class EventLoop {
 public:
     Event *events;
-    Event::CallBack tcp_call_back;
+    int cut_index;
+    std::vector<Event::CallBack> callBacks;
+    int *socket_fds;
 #ifndef _WIN64
-    int socket_fd;
     int epoll_fd;
+    EventLoop() {
 
-    EventLoop(uint16_t port) {
-        this->events = new Event[MAX_COUNT + 1];
-        socket_fd = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
-        if (socket_fd < 0) {
+    };
+
+    static int CreateSocket(uint16_t port){
+        int new_socket = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
+        if (new_socket < 0) {
             std::cout << "[ERROR]>> create socket err!" << std::endl;
             exit(-1);
         }
         int reuse = 1;
-        setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse));
+        setsockopt(new_socket, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse));
         struct sockaddr_in addr;
         bzero(&addr, sizeof addr);
         addr.sin_family = AF_INET;
         addr.sin_port = htons(port);
         addr.sin_addr.s_addr = htonl(INADDR_ANY);
-        int ret = bind(socket_fd, (struct sockaddr *) &addr, sizeof(addr));
+        int ret = bind(new_socket, (struct sockaddr *) &addr, sizeof(addr));
+
         if (ret < 0) {
             std::cout << "[ERROR]>> bind error" << std::endl;
             exit(-1);
         }
 
-        ret = listen(socket_fd, 16);
+        ret = listen(new_socket, 16);
 
         if (ret < 0) {
             std::cout << "[ERROR]>> listen error" << std::endl;
             exit(-1);
         }
-        printf("socket_fd= %d\n", socket_fd);
+
+        printf("socket_fd= %d\n", new_socket);
+        return new_socket;
+    }
+
+
+    void InitEvents(){
+        this->events = new Event[MAX_COUNT + 1];
+    }
+
+    void CreateEpoll() throw(std::runtime_error){
         epoll_fd = epoll_create1(EPOLL_CLOEXEC);
-        Event *accepter = &this->events[MAX_COUNT];
+        if(epoll_fd == -1){
+            throw std::runtime_error("[INIT_ERROR]>> create epoll faile");
+        }
+    }
+
+
+    void CreateEventMap(int fd, int pos, int call_back_index){
+        if(pos > MAX_COUNT){
+            std::cout << "[ERROR]>> pos can not big than MAX_COUNT:"<< MAX_COUNT << std::endl;
+            exit(-1);
+        }
+        cut_index = pos;
+        Event *accepter = &this->events[pos];
+        accepter->data = new int[2]{fd, call_back_index};
         accepter->SetSrcFd(epoll_fd);
-        accepter->Set(socket_fd, EPOLLIN, std::bind(&EventLoop::Accept, this, std::placeholders::_1));
-
-    };
-
-    void RecvData(Event *ev){
-        int n = recv(ev->fd, ev->buff, sizeof(ev->buff), 0);
-        ev->Del();
-        if(n > 0){
-            ev->len = n;
-            ev->buff[n] = '\0';
-            ev->Set(ev->fd, EPOLLOUT, std::bind(&EventLoop::SendData, this, std::placeholders::_1) );
-        }
-
-        if(n <= 0){
-            std::cout << "[Notify]>> clinet:" << ev->fd << "closed" << std::endl;
-            close(ev->fd);
-            ev->ClearBuffer();
-            ev->Del();
-        }
+        accepter->Set(fd, EPOLLIN, std::bind(&EventLoop::Accept, this, std::placeholders::_1));
     }
-
-
-    void SendData(Event *ev){
-        int n = write(ev->fd, ev->buff, ev->len);
-        printf("nbytes = %d\n", n);
-        ev->Del();
-        if(n > 0)
-        {
-            ev->Set(ev->fd, EPOLLOUT,  std::bind(&EventLoop::RecvData, this, std::placeholders::_1) );
-        } else {
-            std::cout << "[Notify]>> clinet:" << ev->fd << "closed" << std::endl;
-            close(ev->fd);
-            ev->ClearBuffer();
-            ev->Del();
-            printf("write error\n");
-        }
-    }
-
-
 
 
     void Accept(Event *ev) {
+        int *data_ptr = (int *)ev->data;
         int i;
-        for (i = 0; i < MAX_COUNT; ++i) {
+        for (i = 0; i < cut_index; ++i) {
             if (this->events[i].statu == EventStatu::Free) break;
         }
 
-        if (i == MAX_COUNT) {
+        if (i == cut_index) {
             std::cout << "[warning]>> max events limited" << std::endl;
             return;
         }
 
-        int connfd = accept(this->socket_fd, NULL, NULL);
+        int connfd = accept(data_ptr[0], NULL, NULL);
         if (connfd < 0) {
             std::cout << "[ERROR]>> accept err" << std::endl;
             return;
@@ -144,7 +136,13 @@ public:
         setnonblocking(connfd);
         auto e = &this->events[i];
         e->SetSrcFd(epoll_fd);
-        e->Set(connfd, EPOLLIN, std::bind(&EventLoop::RecvData, this, std::placeholders::_1) );
+        e->Set(connfd, EPOLLIN, this->callBacks[data_ptr[1]]);
+    }
+
+
+
+    void SetCallBackS(std::vector<Event::CallBack> callbacks){
+        this->callBacks = callbacks;
     }
 
 
@@ -223,9 +221,7 @@ public:
         return a > b? a : b;
     }
 
-    void BindTcpHandle(const Event::CallBack &callBack){
-        tcp_call_back = callBack;
-    }
+
 
     void Accept(Event *ev) {
         int i;

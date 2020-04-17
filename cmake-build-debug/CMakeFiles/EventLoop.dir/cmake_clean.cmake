@@ -1,9 +1,7 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/EventLoop.dir/main.cpp.obj"
+  "CMakeFiles/EventLoop.dir/main.cpp.o"
   "EventLoop.pdb"
-  "EventLoop.exe"
-  "EventLoop.exe.manifest"
-  "libEventLoop.dll.a"
+  "EventLoop"
 )
 
 # Per-language clean rules from dependency scanning.
