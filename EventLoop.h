@@ -152,8 +152,7 @@ public:
         while (1) {
             int nfd = epoll_wait(this->epoll_fd, epoll_events, MAX_COUNT + 1, 1000);
             for (i = 0; i < nfd; ++i) {
-                Event *ev = (Event *) epoll_events[i].data.ptr;
-                ev->Call();
+                ((Event *) epoll_events[i].data.ptr)->Call();
             }
         }
     }
@@ -288,31 +287,19 @@ public:
                 exit(-1);
             }
 
-            for (int i = 0; i < ret; ++i) {
-                SOCKET s = this->fds._read_fd.fd_array[i];
-                if (FD_ISSET(s, &this->fds._read_fd)) {
-                    int index = GetEventByFd(s);
-                    if(index == -1){
-                        printf("[ERROR]>> find Event Err!");
-                        WSACleanup();
-                        exit(-1);
+            if(ret > 0){
+                for (int i = 0; i < max_fd; ++i) {
+                    if (FD_ISSET(i, &this->fds._read_fd) || FD_ISSET(s, &this->fds._write_fd)) {
+                        int index = GetEventByFd(s);
+                        if(index == -1){
+                            printf("[ERROR]>> find Event Err!");
+                            WSACleanup();
+                            exit(-1);
+                        }
+                        ((Event *)(&this->events[index]))->Call();
                     }
-                    ((Event *)(&this->events[index]))->Call();
                 }
             }
-
-            for (int i = 0; i < ret; ++i) {
-                SOCKET s = this->fds._write_fd.fd_array[i];
-                if (FD_ISSET(s, &this->fds._write_fd)) {
-                    int index = GetEventByFd(s);
-                    if(index == -1){
-                        printf("[ERROR]>> find Event Err!");
-                        exit(-1);
-                    }
-                    ((Event *)(&this->events[index]))->Call();
-                }
-            }
-
         }
     }
 #endif
