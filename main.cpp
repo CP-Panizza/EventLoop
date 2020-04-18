@@ -215,7 +215,8 @@ int main() {
 
     el->timeEventManeger->LoadTimeEventMap([](TimeEvent *event){
             std::cout << "5秒执行" << std::endl;
-        }, nullptr,TimeEvemtType::CERCLE, {}, 5000);
+        ((EventLoop *)event->data[0])->customEventManger->Emit("console",{});
+        }, nullptr,TimeEvemtType::CERCLE, {el}, 5000);
 
     el->CreateEpoll();
     el->LoadEventMap(socket_fd, RecvData);
