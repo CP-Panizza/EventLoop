@@ -8,98 +8,94 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/home/cmj/桌面/EventLoop/cmake-build-debug"/>
+				<Option working_dir="C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/cmj/桌面/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/cmj/桌面/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/cmj/桌面/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/cmj/桌面/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="D:/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="D:/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/home/cmj/桌面/EventLoop/cmake-build-debug"/>
+				<Option working_dir="C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/cmj/桌面/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/cmj/桌面/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/cmj/桌面/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/cmj/桌面/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="edit_cache">
-				<Option working_dir="/home/cmj/桌面/EventLoop/cmake-build-debug"/>
-				<Option type="4"/>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/cmj/桌面/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/cmj/桌面/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/cmj/桌面/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/cmj/桌面/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="D:/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="D:/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="EventLoop">
-				<Option output="/home/cmj/桌面/EventLoop/cmake-build-debug/EventLoop" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/cmj/桌面/EventLoop/cmake-build-debug"/>
+				<Option output="C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/EventLoop.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/usr/include/c++/4.9"/>
-					<Add directory="/usr/include/i386-linux-gnu/c++/4.9"/>
-					<Add directory="/usr/include/c++/4.9/backward"/>
-					<Add directory="/usr/lib/gcc/i686-linux-gnu/4.9/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/i686-linux-gnu/4.9/include-fixed"/>
-					<Add directory="/usr/include/i386-linux-gnu"/>
-					<Add directory="/usr/include"/>
+					<Add directory="D:/MinGW64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.2/include"/>
+					<Add directory="D:/MinGW64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.2/include-fixed"/>
+					<Add directory="D:/MinGW64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.2/../../../../x86_64-w64-mingw32/include"/>
+					<Add directory="D:/MinGW64/lib/gcc/../../x86_64-w64-mingw32/include/c++"/>
+					<Add directory="D:/MinGW64/lib/gcc/../../x86_64-w64-mingw32/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="D:/MinGW64/lib/gcc/../../x86_64-w64-mingw32/include/c++/backward"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/cmj/桌面/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 EventLoop"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/cmj/桌面/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/cmj/桌面/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/cmj/桌面/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="D:/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 EventLoop"/>
+					<CompileFile command="D:/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="EventLoop/fast">
-				<Option output="/home/cmj/桌面/EventLoop/cmake-build-debug/EventLoop" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/cmj/桌面/EventLoop/cmake-build-debug"/>
+				<Option output="C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/EventLoop.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/usr/include/c++/4.9"/>
-					<Add directory="/usr/include/i386-linux-gnu/c++/4.9"/>
-					<Add directory="/usr/include/c++/4.9/backward"/>
-					<Add directory="/usr/lib/gcc/i686-linux-gnu/4.9/include"/>
-					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/i686-linux-gnu/4.9/include-fixed"/>
-					<Add directory="/usr/include/i386-linux-gnu"/>
-					<Add directory="/usr/include"/>
+					<Add directory="D:/MinGW64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.2/include"/>
+					<Add directory="D:/MinGW64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.2/include-fixed"/>
+					<Add directory="D:/MinGW64/bin/../lib/gcc/x86_64-w64-mingw32/4.9.2/../../../../x86_64-w64-mingw32/include"/>
+					<Add directory="D:/MinGW64/lib/gcc/../../x86_64-w64-mingw32/include/c++"/>
+					<Add directory="D:/MinGW64/lib/gcc/../../x86_64-w64-mingw32/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="D:/MinGW64/lib/gcc/../../x86_64-w64-mingw32/include/c++/backward"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j4 -f &quot;/home/cmj/桌面/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 EventLoop/fast"/>
-					<CompileFile command="/usr/bin/make -j4 -f &quot;/home/cmj/桌面/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j4 -f &quot;/home/cmj/桌面/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j4 -f &quot;/home/cmj/桌面/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="D:/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 EventLoop/fast"/>
+					<CompileFile command="D:/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="D:/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="D:/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="D:/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="D:/MinGW64/bin/mingw32-make.exe -f &quot;C:/Users/Administrator/Desktop/EventLoop/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/cmj/桌面/EventLoop/CusEvent.hpp">
+		<Unit filename="C:/Users/Administrator/Desktop/EventLoop/CusEvent.hpp">
 			<Option target="EventLoop"/>
 		</Unit>
-		<Unit filename="/home/cmj/桌面/EventLoop/Event.hpp">
+		<Unit filename="C:/Users/Administrator/Desktop/EventLoop/Event.hpp">
 			<Option target="EventLoop"/>
 		</Unit>
-		<Unit filename="/home/cmj/桌面/EventLoop/EventLoop.h">
+		<Unit filename="C:/Users/Administrator/Desktop/EventLoop/EventLoop.h">
 			<Option target="EventLoop"/>
 		</Unit>
-		<Unit filename="/home/cmj/桌面/EventLoop/TimeEvent.hpp">
+		<Unit filename="C:/Users/Administrator/Desktop/EventLoop/TimeEvent.hpp">
 			<Option target="EventLoop"/>
 		</Unit>
-		<Unit filename="/home/cmj/桌面/EventLoop/main.cpp">
+		<Unit filename="C:/Users/Administrator/Desktop/EventLoop/main.cpp">
 			<Option target="EventLoop"/>
 		</Unit>
-		<Unit filename="/home/cmj/桌面/EventLoop/CMakeLists.txt">
+		<Unit filename="C:/Users/Administrator/Desktop/EventLoop/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>

@@ -165,8 +165,6 @@ public:
         while(temp->next != nullptr){
             long sec, ms;
             GetTime(&sec, &ms);
-            std::cout << "now sec:" << sec << "  now ms:" << ms << std::endl;
-            std::cout << "when_sec:" << temp->next->event->when_sec << "  when_ms:" << temp->next->event->when_ms << std::endl;
             if(temp->next->event->when_sec <= sec || (temp->next->event->when_sec ==sec && temp->next->event->when_ms < ms)){
                 temp->next->event->Call();
                 if(temp->next == nullptr) return; //如果在回调中自己删除自己，则temp->next为null，需要直接返回

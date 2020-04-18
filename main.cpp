@@ -128,9 +128,6 @@ void SendData(Event *ev)
 
 }
 
-#endif
-
-
 void SendHttp(Event *ev)
 {
     int ret = -1;
@@ -200,11 +197,86 @@ Content-Type: application/json;charset=utf8
 }
 
 
+#endif
+
+
+void SendHttp(Event *ev)
+{
+    int ret = -1;
+    int Total = 0;
+    int lenSend = 0;
+    struct timeval tv{};
+    tv.tv_sec = 3;
+    tv.tv_usec = 500;
+    fd_set wset;
+    while(true)
+    {
+        FD_ZERO(&wset);
+        FD_SET(ev->fd, &wset);
+        if(select(ev->fd + 1, nullptr, &wset, nullptr, &tv) > 0)//3.5秒之内可以send，即socket可以写入
+        {
+            lenSend = send(ev->fd,ev->buff + Total, ev->len - Total,0);
+            if(lenSend == -1)
+            {
+                ev->ClearBuffer();
+                closesocket(ev->fd);
+                ev->Del();
+                return;
+            }
+            Total += lenSend;
+            if(Total == ev->len)
+            {
+                ev->ClearBuffer();
+                closesocket(ev->fd);
+                ev->Del();
+                return;
+            }
+        }
+
+        else  //3.5秒之内socket还是不可以写入，认为发送失败
+        {
+            ev->ClearBuffer();
+            closesocket(ev->fd);
+            ev->Del();
+            return;
+        }
+    }
+
+}
+
+void HandleHttp(Event *ev){
+    char buff[1024];
+    int n = recv(ev->fd, buff, sizeof(buff), 0);
+    if(n > 0){
+        buff[n] = '\0';
+        printf("recv: %s\n", buff);
+        std::string data = R"(HTTP/1.1 200 OK
+Date: Sat, 31 Dec 2005 23:59:59 GMT
+Content-Type: application/json;charset=utf8
+
+{"name":"cmj", "age": 120})";
+//        ev->customEventManger->Emit("console",{});
+        strcpy(ev->buff, data.c_str());
+        ev->len = data.size();
+        ev->Set(ev->fd, SelectEvent::Write,  SendHttp);
+    }else if((n < 0) && (errno == EAGAIN||errno == EWOULDBLOCK||errno == EINTR)){
+        ev->Set(ev->fd, SelectEvent::Write, HandleHttp);
+    } else if(n == 0 || n == -1){
+        std::cout << "[Notify]>> clinet:" << ev->fd << "closed" << std::endl;
+        closesocket(ev->fd);
+        ev->ClearBuffer();
+        ev->Del();
+    }
+}
+
+
+
+
 int main() {
 
     EventLoop *el = new EventLoop;
-    int socket_fd = el->CreateSocket(8888);
-    int http_fd = el->CreateSocket(8881);
+    SOCKET socket_fd = el->CreateSocket(8888);
+    SOCKET http_fd = el->CreateSocket(8881);
     el->InitEvents();
     el->InitEventManger();
     el->InitTimeEventManeger();
@@ -213,12 +285,16 @@ int main() {
         std::cout << "run console" << std::endl;
     });
 
-    el->timeEventManeger->LoadTimeEventMap([](TimeEvent *event){
-            std::cout << "5秒执行" << std::endl;
-        ((EventLoop *)event->data[0])->customEventManger->Emit("console",{});
-        }, nullptr,TimeEvemtType::CERCLE, {el}, 5000);
+//    el->timeEventManeger->LoadTimeEventMap([](TimeEvent *event){
+//            std::cout << "5s run!!!" << std::endl;
+//        ((EventLoop *)event->data[0])->customEventManger->Emit("console",{});
+//        }, nullptr,TimeEvemtType::CERCLE, {el}, 5000);
 
+#ifndef _WIN64
     el->CreateEpoll();
+#else
+    el->InitFDS();
+#endif
     el->LoadEventMap(socket_fd, RecvData);
     el->LoadEventMap(http_fd, HandleHttp);
     el->Run();

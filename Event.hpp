@@ -38,8 +38,7 @@ public:
     int src_fd; //事件源fd exp: select_fd, epoll_fd
     int fd;
     int events;
-    EventManger *customEventManger;
-    EventLoop *el;
+
     void SetSrcFd(int _src_fd){
         this->src_fd = _src_fd;
     }
@@ -94,14 +93,10 @@ public:
 
         if(_event == SelectEvent::Read){
             FD_CLR(this->fd, &this->src_fd->write_fd);
-            FD_CLR(this->fd, &this->src_fd->_write_fd);
             FD_SET(this->fd, &this->src_fd->read_fd);
-            FD_SET(this->fd, &this->src_fd->_read_fd);
         } else {
             FD_SET(this->fd, &this->src_fd->write_fd);
-            FD_SET(this->fd, &this->src_fd->_write_fd);
             FD_CLR(this->fd, &this->src_fd->read_fd);
-            FD_CLR(this->fd, &this->src_fd->_read_fd);
         }
 
         if (this->statu != EventStatu::Using) {
@@ -112,9 +107,7 @@ public:
     void Del(){
         if(this->statu == EventStatu::Free) return;
         FD_CLR(this->fd, &this->src_fd->write_fd);
-        FD_CLR(this->fd, &this->src_fd->_write_fd);
         FD_CLR(this->fd, &this->src_fd->read_fd);
-        FD_CLR(this->fd, &this->src_fd->_read_fd);
         this->statu = EventStatu ::Free;
     }
 
@@ -125,7 +118,8 @@ public:
     int len;
     CallBack callBack;
     EventStatu statu = EventStatu::Free;
-
+    EventManger *customEventManger;
+    EventLoop *el;
 
     void ClearBuffer() {
         memset(this->buff, 0, sizeof(this->buff));

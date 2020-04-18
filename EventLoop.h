@@ -28,19 +28,24 @@
 
 
 struct MiddleData {
-    MiddleData(int fd, const Event::CallBack &callBack) : fd(fd), callBack(callBack) {}
-
+#ifndef _WIN64
     int fd;
+    MiddleData(int fd, const Event::CallBack &callBack) : fd(fd), callBack(callBack) {}
+#else
+    SOCKET fd;
+    MiddleData(SOCKET fd, const Event::CallBack &callBack) : fd(fd), callBack(callBack) {}
+#endif
+
     Event::CallBack callBack;
 };
 
 
 #ifdef _WIN64
 
-int setnonblocking( SOCKET s){
-    unsigned long ul=1;
-    int ret=ioctlsocket(s, FIONBIO, &ul);//设置成非阻塞模式。
-    if(ret==SOCKET_ERROR)//设置失败。
+int setnonblocking(SOCKET s) {
+    unsigned long ul = 1;
+    int ret = ioctlsocket(s, FIONBIO, &ul);//设置成非阻塞模式。
+    if (ret == SOCKET_ERROR)//设置失败。
     {
         return -1;
     }
@@ -67,13 +72,13 @@ public:
 
     bool running;
 
-#ifndef _WIN64
-
-    int epoll_fd;
-
     EventLoop() {
         cut_index = MAX_COUNT;
     };
+
+    void InitEvents() {
+        this->events = new Event[MAX_COUNT + 1];
+    }
 
     void InitEventManger(){
         this->customEventManger = new EventManger;
@@ -82,6 +87,16 @@ public:
     void InitTimeEventManeger(){
         this->timeEventManeger = new TimeEventManeger;
     }
+
+    void ShutDown(){
+        running = false;
+        std::cout << "[INFO]>> Server is shutdown" << std::endl;
+        exit(-1);
+    }
+
+#ifndef _WIN64
+
+    int epoll_fd;
 
     static int CreateSocket(uint16_t port) {
         int new_socket = socket(AF_INET, SOCK_STREAM | SOCK_NONBLOCK, 0);
@@ -115,9 +130,6 @@ public:
     }
 
 
-    void InitEvents() {
-        this->events = new Event[MAX_COUNT + 1];
-    }
 
     void CreateEpoll() throw(std::runtime_error) {
         epoll_fd = epoll_create1(EPOLL_CLOEXEC);
@@ -225,158 +237,226 @@ public:
     }
 
 
-    void ShutDown(){
-        running = false;
-        std::cout << "[INFO]>> Server is shutdown" << std::endl;
-        exit(-1);
-    }
+
 
 
 #else
 
-    public:
-        SOCKET socket_fd;
-        int max_fd;
-        FDS fds;
-        EventLoop(uint16_t port){
-            this->events = new Event[MAX_COUNT + 1];
-            WORD dwVersion = MAKEWORD(2, 2);
-            WSAData wsaData{};
-            WSAStartup(dwVersion, &wsaData);
-            sockaddr_in servaddr{};
-            memset(&servaddr, 0, sizeof(servaddr));
-            servaddr.sin_family = AF_INET; //网络类型
-            servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
-            servaddr.sin_port = htons(port); //端口
+public:
 
-            if ((socket_fd = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET) {
-                printf("[ERROR]>> create socket error: %s(errno: %d)\n", strerror(errno), errno);
-                WSACleanup();
-                exit(-1);
-            }
+    SOCKET max_fd;
+    FDS fds;
 
-            bool bReAddr = true;
-            if (SOCKET_ERROR == (setsockopt(socket_fd, SOL_SOCKET, SO_REUSEADDR, (char *) &bReAddr, sizeof(bReAddr)))) {
-                std::cout << "[ERROR]>> set resueaddr socket err!" << std::endl;
-                WSACleanup();
-                exit(-1);
-            }
-
-            if (bind(socket_fd, (struct sockaddr *) &servaddr, sizeof(servaddr)) == INVALID_SOCKET) {
-                printf("[ERROR]>> bind socket error: %s(errno: %d)\n", strerror(errno), errno);
-                WSACleanup();
-                exit(-1);
-            }
-
-            //监听，设置最大连接数10
-            if (listen(socket_fd, 10) == INVALID_SOCKET) {
-                printf("[ERROR]>> listen socket error: %s(errno: %d)\n", strerror(errno), errno);
-                WSACleanup();
-                exit(-1);
-            }
-            max_fd = socket_fd;
-            if(setnonblocking(socket_fd) == -1){
-                printf("[ERROR]>> set socket_fd nnonblock err");
-                exit(-1);
-            }
-
-            FD_ZERO(&fds.read_fd);
-            FD_ZERO(&fds.write_fd);
-            FD_ZERO(&fds._read_fd);
-            FD_ZERO(&fds._read_fd);
-            FD_SET(socket_fd, &fds.read_fd);
-            Event *accepter = &this->events[MAX_COUNT];
-            accepter->SetSrcFd(&fds);
-            accepter->Set(socket_fd, SelectEvent::Read, std::bind(&EventLoop::Accept, this, std::placeholders::_1));
+    SOCKET CreateSocket(uint16_t port) {
+        WORD dwVersion = MAKEWORD(2, 2);
+        WSAData wsaData{};
+        WSAStartup(dwVersion, &wsaData);
+        sockaddr_in servaddr{};
+        memset(&servaddr, 0, sizeof(servaddr));
+        servaddr.sin_family = AF_INET; //网络类型
+        servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+        servaddr.sin_port = htons(port); //端口
+        SOCKET new_socket;
+        if ((new_socket = socket(AF_INET, SOCK_STREAM, 0)) == INVALID_SOCKET) {
+            printf("[ERROR]>> create socket error: %s(errno: %d)\n", strerror(errno), errno);
+            WSACleanup();
+            exit(-1);
         }
 
-        int max(int a, int b){
-            if(a == b) return a;
-            return a > b? a : b;
+        bool bReAddr = true;
+        if (SOCKET_ERROR == (setsockopt(new_socket, SOL_SOCKET, SO_REUSEADDR, (char *) &bReAddr, sizeof(bReAddr)))) {
+            std::cout << "[ERROR]>> set resueaddr socket err!" << std::endl;
+            WSACleanup();
+            exit(-1);
         }
 
-
-
-        void Accept(Event *ev) {
-            int i;
-            for (i = 0; i < MAX_COUNT; ++i) {
-                if (this->events[i].statu == EventStatu::Free) break;
-            }
-
-            printf("find place %d", i);
-            if (i == MAX_COUNT) {
-                std::cout << "[warning]>> max events limited" << std::endl;
-                return;
-            }
-
-            SOCKET connfd = accept(this->socket_fd, NULL, NULL);
-            if (connfd < 0) {
-                std::cout << "[ERROR]>> accept err" << std::endl;
-                exit(-1);
-            }
-
-            printf("accept a clinet %d\n", connfd);
-            if(setnonblocking(connfd) == -1){
-                printf("[ERROR]>> clinet %d set nonblock err\n", connfd);
-                closesocket(connfd);
-                return;
-            }
-            max_fd = max(socket_fd, connfd);
-            auto e = &this->events[i];
-            e->SetSrcFd(&this->fds);
-            e->Set(connfd, SelectEvent::Read, this->tcp_call_back);
+        if (bind(new_socket, (struct sockaddr *) &servaddr, sizeof(servaddr)) == INVALID_SOCKET) {
+            printf("[ERROR]>> bind socket error: %s(errno: %d)\n", strerror(errno), errno);
+            WSACleanup();
+            exit(-1);
         }
 
+        //监听，设置最大连接数10
+        if (listen(new_socket, 10) == INVALID_SOCKET) {
+            printf("[ERROR]>> listen socket error: %s(errno: %d)\n", strerror(errno), errno);
+            WSACleanup();
+            exit(-1);
+        }
+        max_fd = new_socket;
+        if (setnonblocking(new_socket) == -1) {
+            printf("[ERROR]>> set socket_fd nnonblock err");
+            exit(-1);
+        }
+        return new_socket;
+    }
+
+    void InitFDS(){
+        FD_ZERO(&fds.read_fd);
+        FD_ZERO(&fds.write_fd);
+        FD_ZERO(&fds._read_fd);
+        FD_ZERO(&fds._read_fd);
+    }
+
+    void LoadEventMap(SOCKET fd, Event::CallBack call_back) {
+
+        Event *accepter = &this->events[cut_index--];
+
+        accepter->data = new MiddleData(fd, call_back);
+
+        accepter->SetSrcFd(&fds);
+
+        accepter->customEventManger = this->customEventManger;
+
+        accepter->el = this;
+
+        accepter->Set(fd, SelectEvent::Read, std::bind(&EventLoop::Accept, this, std::placeholders::_1));
+    }
 
 
+    SOCKET max(SOCKET a, SOCKET b) {
+        if (a == b) return a;
+        return a > b ? a : b;
+    }
 
-        int GetEventByFd(SOCKET s){
-            int i;
-            for (i = 0; i <= MAX_COUNT; ++i) {
-                if (this->events[i].fd == s && this->events[i].statu == EventStatu::Using) break;
-            }
 
-            if (i > MAX_COUNT) {
-                std::cout << "[warning]>> max events limited" << std::endl;
-                return -1;
-            } else {
-                return i;
-            }
+    void Accept(Event *ev) {
+
+        auto *data_ptr = (MiddleData *) ev->data;
+
+        int i;
+
+        for (i = 0; i < cut_index; ++i) {
+            if (this->events[i].statu == EventStatu::Free) break;
         }
 
+        if (i == cut_index) {
+            std::cout << "[warning]>> max events limited" << std::endl;
+            return;
+        }
 
-        void Run() {
-            int ret;
-            struct timeval t = {5, 0};
-            while (1) {
-                FD_ZERO(&this->fds._write_fd);
-                FD_ZERO(&this->fds._read_fd);
-                this->fds._read_fd = this->fds.read_fd;
-                this->fds._write_fd = this->fds.write_fd;
-                printf("select before read_count:%d\n", this->fds.read_fd.fd_count);
-                ret = select(max_fd + 1, &this->fds._read_fd, &this->fds._write_fd, NULL, &t);//最后一个参数为NULL，一直等待，直到有数据过来,客户端断开也会触发读/写状态，然后判断recv返回值是否为0，为0这说明客户端断开连接
-                printf("select after read_count:%d\n", this->fds.read_fd.fd_count);
-                if (ret == SOCKET_ERROR) {
-                    printf("[ERROR]>> select err!");
-                    WSACleanup();
-                    exit(-1);
+        SOCKET connfd = accept(data_ptr->fd, NULL, NULL);
+        if (connfd < 0) {
+            std::cout << "[ERROR]>> accept err" << std::endl;
+            return;
+        }
+
+        printf("accept a clinet %d\n", connfd);
+        if (setnonblocking(connfd) == -1) {
+            printf("[ERROR]>> clinet %d set nonblock err\n", connfd);
+            closesocket(connfd);
+            return;
+        }
+
+        max_fd = max(data_ptr->fd , connfd);
+        auto e = &this->events[i];
+        e->SetSrcFd(&this->fds);
+        e->customEventManger = this->customEventManger;
+        e->el = this;
+        e->Set(connfd, SelectEvent::Read, data_ptr->callBack);
+    }
+
+
+    int GetEventByFd(int s) {
+        int i;
+        for (i = 0; i <= MAX_COUNT; ++i) {
+            if (this->events[i].fd == s && this->events[i].statu == EventStatu::Using) break;
+        }
+
+        if (i > MAX_COUNT) {
+            std::cout << "[warning]>> max events limited" << std::endl;
+            return -1;
+        } else {
+            return i;
+        }
+    }
+
+
+    void Run() {
+        int ret;
+        running = true;
+        while (running) {
+            FD_ZERO(&this->fds._write_fd);
+            FD_ZERO(&this->fds._read_fd);
+            this->fds._read_fd = this->fds.read_fd;
+            this->fds._write_fd = this->fds.write_fd;
+
+            struct timeval tv;
+            long now_sec, now_ms;
+            TimeEvent *te = this->timeEventManeger->GetNearestEvent();
+            if(te){
+                GetTime(&now_sec, &now_ms);
+                tv.tv_sec = te->when_sec - now_sec;
+                if(te->when_ms < now_ms){
+                    tv.tv_usec = (te->when_ms + 1000 - now_ms)*1000;
+                    tv.tv_sec--;
+                } else {
+                    tv.tv_usec = (te->when_ms - now_ms)*1000;
                 }
+                if(tv.tv_sec < 0) tv.tv_sec = 0;
+                if(tv.tv_usec < 0) tv.tv_usec = 0;
+            } else {
+                tv.tv_sec = 0;
+                tv.tv_usec = 0;
+            }
 
-                if(ret > 0){
-                    for (int i = 0; i < max_fd; ++i) {
-                        if (FD_ISSET(i, &this->fds._read_fd) || FD_ISSET(s, &this->fds._write_fd)) {
-                            int index = GetEventByFd(s);
-                            if(index == -1){
-                                printf("[ERROR]>> find Event Err!");
-                                WSACleanup();
-                                exit(-1);
-                            }
-                            ((Event *)(&this->events[index]))->Call();
+            ret = select(max_fd + 1, &this->fds._read_fd, &this->fds._write_fd, NULL, &tv);//最后一个参数为NULL，一直等待，直到有数据过来,客户端断开也会触发读/写状态，然后判断recv返回值是否为0，为0这说明客户端断开连接
+            if (ret == SOCKET_ERROR) {
+                printf("[ERROR]>> select err!");
+                WSACleanup();
+                exit(-1);
+            }
+
+            if (ret > 0) {
+
+                for (int j = 0; j < this->fds._read_fd.fd_count; ++j) {
+                    SOCKET s = this->fds._read_fd.fd_array[j];
+                    if(FD_ISSET(s, &this->fds._read_fd)){
+                        int index = GetEventByFd(s);
+                        if (index == -1) {
+                            printf("[ERROR]>> find Event Err!");
+                            WSACleanup();
+                            exit(-1);
                         }
+                        (&this->events[index])->Call();
                     }
                 }
+
+
+                for (int k = 0; k < this->fds._write_fd.fd_count; ++k) {
+                    SOCKET s = this->fds._write_fd.fd_array[k];
+                    if(FD_ISSET(s, &this->fds._write_fd)){
+                        int index = GetEventByFd(s);
+                        if (index == -1) {
+                            printf("[ERROR]>> find Event Err!");
+                            WSACleanup();
+                            exit(-1);
+                        }
+                        (&this->events[index])->Call();
+                    }
+                }
+
+
+//                for (int i = 0; i <= MAX_COUNT; ++i) {
+//                    if (FD_ISSET(i, &this->fds._read_fd) || FD_ISSET(i, &this->fds._write_fd)) {
+//                        int index = GetEventByFd(i);
+//                        if (index == -1) {
+//                            printf("[ERROR]>> find Event Err!");
+//                            WSACleanup();
+//                            exit(-1);
+//                        }
+//                        (&this->events[index])->Call();
+//                    }
+//                }
             }
+
+            //处理自定义事件
+            this->customEventManger->ProcEvents();
+
+            //处理时间事件
+            this->timeEventManeger->ProcTimeEvent();
         }
+    }
+
 #endif
 };
 
