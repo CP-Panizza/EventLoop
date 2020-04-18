@@ -185,6 +185,7 @@ Date: Sat, 31 Dec 2005 23:59:59 GMT
 Content-Type: application/json;charset=utf8
 
 {"name":"cmj", "age": 120})";
+        ev->customEventManger->Emit("console",{});
         strcpy(ev->buff, data.c_str());
         ev->len = data.size();
         ev->Set(ev->fd, EPOLLOUT,  SendHttp);
@@ -201,22 +202,25 @@ Content-Type: application/json;charset=utf8
 
 int main() {
 
-
     EventLoop *el = new EventLoop;
     int socket_fd = el->CreateSocket(8888);
     int http_fd = el->CreateSocket(8881);
     el->InitEvents();
     el->InitEventManger();
-    el->customEventManger->On("close", [&](EventManger *, std::vector<pvoid> args){
-        auto el = (EventLoop *)args[0];
-        el->ShutDown();
+    el->InitTimeEventManeger();
+
+    el->customEventManger->On("console", [&](EventManger *eventManger, std::vector<pvoid> args){
+        std::cout << "run console" << std::endl;
     });
+
+    el->timeEventManeger->LoadTimeEventMap([](TimeEvent *event){
+            std::cout << "5秒执行" << std::endl;
+        }, nullptr,TimeEvemtType::CERCLE, {}, 5000);
 
     el->CreateEpoll();
     el->LoadEventMap(socket_fd, RecvData);
     el->LoadEventMap(http_fd, HandleHttp);
     el->Run();
-
 
     return 0;
 }

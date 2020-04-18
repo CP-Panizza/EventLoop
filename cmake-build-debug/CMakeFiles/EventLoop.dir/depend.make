@@ -4,6 +4,7 @@
 CMakeFiles/EventLoop.dir/main.cpp.o: ../CusEvent.hpp
 CMakeFiles/EventLoop.dir/main.cpp.o: ../Event.hpp
 CMakeFiles/EventLoop.dir/main.cpp.o: ../EventLoop.h
+CMakeFiles/EventLoop.dir/main.cpp.o: ../TimeEvent.hpp
 CMakeFiles/EventLoop.dir/main.cpp.o: ../main.cpp
 CMakeFiles/EventLoop.dir/main.cpp.o: ../socket_header.h
 

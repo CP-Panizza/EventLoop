@@ -22,6 +22,7 @@
 #include <vector>
 #include "Event.hpp"
 #include "CusEvent.hpp"
+#include "TimeEvent.hpp"
 
 #define pvoid void *
 
@@ -61,6 +62,7 @@ class EventLoop {
 public:
     EventManger *customEventManger;
     Event *events;
+    TimeEventManeger *timeEventManeger;
     int cut_index;  //事件列表分割线
 
     bool running;
@@ -75,6 +77,10 @@ public:
 
     void InitEventManger(){
         this->customEventManger = new EventManger;
+    }
+
+    void InitTimeEventManeger(){
+        this->timeEventManeger = new TimeEventManeger;
     }
 
     static int CreateSocket(uint16_t port) {
@@ -184,12 +190,37 @@ public:
         int i;
         running = true;
         while (running) {
-            int nfd = epoll_wait(this->epoll_fd, epoll_events, MAX_COUNT + 1, 1000);
+            struct timeval tv;
+            long now_sec, now_ms;
+            TimeEvent *te = this->timeEventManeger->GetNearestEvent();
+            if(te){
+                GetTime(&now_sec, &now_ms);
+                tv.tv_sec = te->when_sec - now_sec;
+                if(te->when_ms < now_ms){
+                    tv.tv_usec = (te->when_ms + 1000 - now_ms)*1000;
+                    tv.tv_sec--;
+                } else {
+                    tv.tv_usec = (te->when_ms - now_ms)*1000;
+                }
+                if(tv.tv_sec < 0) tv.tv_sec = 0;
+                if(tv.tv_usec < 0) tv.tv_usec = 0;
+            } else {
+                tv.tv_sec = 0;
+                tv.tv_usec = 0;
+            }
+
+            int nfd = epoll_wait(this->epoll_fd, epoll_events, MAX_COUNT + 1, (tv.tv_sec*1000 + tv.tv_usec/1000));
+
             for (i = 0; i < nfd; ++i) {
                 ((Event *) epoll_events[i].data.ptr)->Call();
             }
 
+            //处理自定义事件
             this->customEventManger->ProcEvents();
+
+            //处理时间事件
+            this->timeEventManeger->ProcTimeEvent();
+
         }
     }
 
