@@ -255,7 +255,7 @@ Date: Sat, 31 Dec 2005 23:59:59 GMT
 Content-Type: application/json;charset=utf8
 
 {"name":"cmj", "age": 120})";
-//        ev->customEventManger->Emit("console",{});
+        ev->customEventManger->Emit("close",{ev->el});
         strcpy(ev->buff, data.c_str());
         ev->len = data.size();
         ev->Set(ev->fd, SelectEvent::Write,  SendHttp);
@@ -285,10 +285,14 @@ int main() {
         std::cout << "run console" << std::endl;
     });
 
-//    el->timeEventManeger->LoadTimeEventMap([](TimeEvent *event){
-//            std::cout << "5s run!!!" << std::endl;
-//        ((EventLoop *)event->data[0])->customEventManger->Emit("console",{});
-//        }, nullptr,TimeEvemtType::CERCLE, {el}, 5000);
+    el->customEventManger->On("close", [&](EventManger *eventManger, std::vector<pvoid> args){
+        ((EventLoop *)args[0])->ShutDown();
+    });
+
+    el->timeEventManeger->LoadTimeEventMap([](TimeEvent *event){
+            std::cout << "5s run!!!" << std::endl;
+        ((EventLoop *)event->data[0])->customEventManger->Emit("console",{});
+        }, nullptr,TimeEvemtType::CERCLE, {el}, 5000);
 
 #ifndef _WIN64
     el->CreateEpoll();

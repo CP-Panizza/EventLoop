@@ -12,37 +12,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5977ee8f-0059-4a8e-889a-981c8f966856" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Event.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/Event.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EventLoop.h" beforeDir="false" afterPath="$PROJECT_DIR$/EventLoop.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TimeEvent.hpp" beforeDir="false" afterPath="$PROJECT_DIR$/TimeEvent.hpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.11.4/CMakeCCompiler.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.11.4/CMakeCXXCompiler.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.11.4/CMakeDetermineCompilerABI_C.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.11.4/CMakeDetermineCompilerABI_CXX.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.11.4/CMakeSystem.cmake" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.11.4/CompilerIdC/CMakeCCompilerId.c" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/3.11.4/CompilerIdCXX/CMakeCXXCompilerId.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeDirectoryInformation.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EventLoop.dir/CXX.includecache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EventLoop.dir/DependInfo.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EventLoop.dir/DependInfo.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EventLoop.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EventLoop.dir/build.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EventLoop.dir/cmake_clean.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EventLoop.dir/cmake_clean.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EventLoop.dir/depend.internal" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EventLoop.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EventLoop.dir/depend.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EventLoop.dir/flags.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EventLoop.dir/flags.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EventLoop.dir/link.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/EventLoop.dir/link.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/feature_tests.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/feature_tests.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/EventLoop.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/EventLoop.cbp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -81,7 +50,7 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="cpp" value="248" />
+          <entry key="cpp" value="293" />
           <entry key="h" value="1731" />
           <entry key="hpp" value="316" />
           <entry key="mm" value="31" />
@@ -89,18 +58,18 @@
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="ObjectiveC" value="2326" />
+          <entry key="ObjectiveC" value="2371" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-57">
-              <caret line="285" column="7" selection-start-line="285" selection-start-column="7" selection-end-line="285" selection-end-column="7" />
+            <state relative-caret-position="124">
+              <caret line="287" lean-forward="true" selection-start-line="287" selection-end-line="287" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
                 <element signature="e#1713#5016#0" expanded="true" />
@@ -122,11 +91,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/EventLoop.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="85">
-              <caret line="385" column="19" selection-start-line="385" selection-start-column="19" selection-end-line="385" selection-end-column="19" />
+            <state relative-caret-position="337">
+              <caret line="400" lean-forward="true" selection-start-line="400" selection-end-line="400" />
               <folding>
                 <element signature="e#166#192#0" expanded="true" />
                 <element signature="e#428#523#0" expanded="true" />
@@ -158,8 +127,8 @@
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/TimeEvent.hpp" />
         <option value="$PROJECT_DIR$/Event.hpp" />
-        <option value="$PROJECT_DIR$/main.cpp" />
         <option value="$PROJECT_DIR$/EventLoop.h" />
+        <option value="$PROJECT_DIR$/main.cpp" />
       </list>
     </option>
   </component>
@@ -255,15 +224,16 @@
       <workItem from="1587112116125" duration="11323000" />
       <workItem from="1587145571763" duration="2367000" />
       <workItem from="1587179828509" duration="7267000" />
-      <workItem from="1587205166884" duration="8295000" />
+      <workItem from="1587205166884" duration="9005000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="63979000" />
+    <option name="totallyTimeSpent" value="64689000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="25" width="1938" height="1064" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1695279" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -277,7 +247,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="CMake" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.23353294" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.38777778" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.32934132" />
       <window_info anchor="bottom" id="Messages" order="12" weight="0.42777777" />
@@ -420,6 +390,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/EventLoop.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="337">
+          <caret line="400" lean-forward="true" selection-start-line="400" selection-end-line="400" />
+          <folding>
+            <element signature="e#166#192#0" expanded="true" />
+            <element signature="e#428#523#0" expanded="true" />
+            <element signature="e#787#963#0" expanded="true" />
+            <element signature="e#1618#5656#0" expanded="true" />
+            <element signature="e#5715#7313#0" />
+            <element signature="e#7319#7467#0" />
+            <element signature="e#8169#8258#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Event.hpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="421">
@@ -432,28 +418,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-57">
-          <caret line="285" column="7" selection-start-line="285" selection-start-column="7" selection-end-line="285" selection-end-column="7" />
+        <state relative-caret-position="124">
+          <caret line="287" lean-forward="true" selection-start-line="287" selection-end-line="287" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
             <element signature="e#1713#5016#0" expanded="true" />
             <element signature="e#7500#7518#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/EventLoop.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="385" column="19" selection-start-line="385" selection-start-column="19" selection-end-line="385" selection-end-column="19" />
-          <folding>
-            <element signature="e#166#192#0" expanded="true" />
-            <element signature="e#428#523#0" expanded="true" />
-            <element signature="e#787#963#0" expanded="true" />
-            <element signature="e#1618#5656#0" expanded="true" />
-            <element signature="e#5715#7313#0" />
-            <element signature="e#7319#7467#0" />
-            <element signature="e#8169#8258#0" />
           </folding>
         </state>
       </provider>
